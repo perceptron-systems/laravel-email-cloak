@@ -26,12 +26,22 @@ composer require perceptron-systems/laravel-email-cloak
 
 The service provider is auto-discovered.
 
-Publish the configuration and the optional CSS:
+Publish the configuration and the CSS:
 
 ```bash
 php artisan vendor:publish --tag=email-cloak-config
 php artisan vendor:publish --tag=email-cloak-assets
 ```
+
+Then include the stylesheet in your layout:
+
+```blade
+<link rel="stylesheet" href="{{ asset('vendor/email-cloak/email-cloak.css') }}">
+```
+
+> **⚠ The CSS is required for the `balanced` (default) and `paranoid` levels.**
+> Without it, `balanced` reveals the `NOSPAM-REMOVE-THIS` decoy spans on screen, and `paranoid` displays characters in the randomised DOM order — both unreadable for users.
+> The `light` level is the only one that works without the stylesheet (you can then skip `--tag=email-cloak-assets`).
 
 ## Usage
 
