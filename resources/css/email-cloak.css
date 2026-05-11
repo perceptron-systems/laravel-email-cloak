@@ -1,0 +1,21 @@
+/*
+ * laravel-email-cloak — feuille de style optionnelle
+ *
+ * Le niveau `light` ne nécessite aucun CSS. Cette feuille n'est utile que pour
+ * les niveaux `balanced` et `paranoid`, qui injectent des nœuds décoy.
+ */
+
+.email-cloak {
+    word-break: break-all;
+}
+
+/* Décoys invisibles à l'écran et exclus du copier-coller. */
+.email-cloak [data-cloak-decoy] {
+    display: none;
+}
+
+/* Niveau paranoid : reconstitue l'ordre visuel via flex/order. */
+.email-cloak--scrambled {
+    display: inline-flex;
+    flex-direction: row;
+}
