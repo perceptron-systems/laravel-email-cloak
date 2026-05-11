@@ -77,8 +77,8 @@ Configurable globalement dans `config/email-cloak.php`, ou par appel.
 
 | Niveau | Sélection | Copie | Résistance bot |
 |---|---|---|---|
-| `light` *(défaut)* | ✅ | ✅ propre | Faible — entités + proxy |
-| `balanced` | ✅ | ✅ avec décoys auto-strippés à la plupart des collages | Moyenne — entités + spans `display:none` poison + zero-width spaces + proxy |
+| `light` | ✅ | ✅ propre | Faible — entités + proxy |
+| `balanced` *(défaut)* | ✅ | ✅ avec décoys auto-strippés à la plupart des collages | Moyenne — entités + spans `display:none` poison + zero-width spaces + proxy |
 | `paranoid` | ✅ | ❌ scramblée | Haute — caractères en spans réordonnés via `flex` `order`, copie inutilisable mais lecture humaine OK |
 
 Surcharge par appel :
@@ -92,7 +92,7 @@ Surcharge par appel :
 Variables d'environnement disponibles :
 
 ```dotenv
-EMAIL_CLOAK_LEVEL=light
+EMAIL_CLOAK_LEVEL=balanced
 EMAIL_CLOAK_ROUTE=/m
 EMAIL_CLOAK_TTL=86400
 EMAIL_CLOAK_RATE_LIMIT=30
@@ -118,7 +118,7 @@ composer install
 composer test
 ```
 
-La suite vérifie notamment qu'**aucune occurrence littérale** de l'adresse, ni de `mailto:`, ni du caractère `@` ne se retrouve dans le HTML rendu au niveau `light`.
+La suite vérifie notamment qu'**aucune occurrence littérale** de l'adresse, ni de `mailto:`, ni du caractère `@` ne se retrouve dans le HTML rendu, quel que soit le niveau.
 
 ## Licence
 

@@ -16,7 +16,7 @@ return [
     | - paranoid  : balanced + ordre DOM scramblé via flex `order` (copie KO)
     |
     */
-    'level' => env('EMAIL_CLOAK_LEVEL', 'light'),
+    'level' => env('EMAIL_CLOAK_LEVEL', 'balanced'),
 
     /*
     |--------------------------------------------------------------------------
