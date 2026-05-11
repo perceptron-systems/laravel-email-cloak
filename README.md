@@ -77,7 +77,7 @@ public function show(EmailCloak $cloak)
 |---|---|
 | **Decimal HTML entities** | `contact@example.com` becomes `&#99;&#111;&#110;…` in the source. Naive regexes (`/[\w.]+@[\w.]+/`) don't match; the browser displays the text normally. |
 | **Encrypted proxy route** | `href` points to `/m?t={token}` instead of `mailto:`. The token is `Crypt::encrypt(['email' => …, 'exp' => …])` — opaque, stateless, expiring. |
-| **Rate limit** | The proxy route is throttled per IP using Laravel's native RateLimiter (default 30/min). A crawler resolving tokens en masse is slowed. |
+| **Rate limit** | The proxy route is throttled per IP using Laravel's native RateLimiter (default 10/min — humans rarely click more than a few mailto links per minute, harvesters want far more). Raise it for high-traffic NAT environments. |
 | **Verbalised `aria-label`** | Screen readers announce "contact at example dot com". The literal address never appears in any attribute. |
 | **`X-Robots-Tag: noindex, nofollow`** | The proxy route is not indexable. |
 | **Server-side validation** | `filter_var(..., FILTER_VALIDATE_EMAIL)` and expiry check before any `mailto:` redirect. |
@@ -108,7 +108,7 @@ EMAIL_CLOAK_ROUTE=/m
 EMAIL_CLOAK_ROUTE_ENABLED=true
 EMAIL_CLOAK_ROUTE_NAME=email-cloak.mailto
 EMAIL_CLOAK_TTL=86400
-EMAIL_CLOAK_RATE_LIMIT=30
+EMAIL_CLOAK_RATE_LIMIT=10
 EMAIL_CLOAK_CSS_CLASS=email-cloak
 EMAIL_CLOAK_DECOY=NOSPAM-REMOVE-THIS
 ```

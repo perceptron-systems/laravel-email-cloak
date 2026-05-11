@@ -56,8 +56,14 @@ return [
     |--------------------------------------------------------------------------
     | Per-IP rate limit (requests / minute)
     |--------------------------------------------------------------------------
+    |
+    | A real user rarely resolves more than a handful of mailto: links per
+    | minute (page with several team contacts, accidental clicks, NAT). Bots
+    | doing mass harvesting want orders of magnitude more. A low default
+    | catches the latter without inconveniencing the former.
+    |
     */
-    'rate_limit' => (int) env('EMAIL_CLOAK_RATE_LIMIT', 30),
+    'rate_limit' => (int) env('EMAIL_CLOAK_RATE_LIMIT', 10),
 
     /*
     |--------------------------------------------------------------------------
