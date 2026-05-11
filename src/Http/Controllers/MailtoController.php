@@ -11,9 +11,7 @@ use Illuminate\Http\Request;
 
 class MailtoController
 {
-    public function __construct(private readonly Encrypter $encrypter)
-    {
-    }
+    public function __construct(private readonly Encrypter $encrypter) {}
 
     public function __invoke(Request $request): RedirectResponse
     {
@@ -42,7 +40,7 @@ class MailtoController
         }
 
         return redirect()
-            ->away('mailto:' . $payload['email'], 302)
+            ->away('mailto:'.$payload['email'], 302)
             ->withHeaders(['X-Robots-Tag' => 'noindex, nofollow']);
     }
 }

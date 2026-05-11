@@ -16,8 +16,7 @@ class EmailCloak
         private readonly ConfigRepository $config,
         private readonly Encrypter $encrypter,
         private readonly UrlGenerator $urls,
-    ) {
-    }
+    ) {}
 
     /**
      * Génère le HTML d'un lien email obfusqué.
@@ -34,7 +33,7 @@ class EmailCloak
         $href = $this->buildProxyUrl($email);
         $visible = $this->buildVisibleContent($email, $level, $label);
 
-        $cssClasses = $cssClass . ($level === 'paranoid' ? ' email-cloak--scrambled' : '');
+        $cssClasses = $cssClass.($level === 'paranoid' ? ' email-cloak--scrambled' : '');
 
         $html = sprintf(
             '<a href="%s" class="%s" aria-label="%s" rel="nofollow noopener">%s</a>',
@@ -60,7 +59,7 @@ class EmailCloak
         $token = $this->encrypter->encrypt($payload);
         $prefix = (string) $this->config->get('email-cloak.route_prefix', '/m');
 
-        return $this->urls->to($prefix) . '?t=' . rawurlencode($token);
+        return $this->urls->to($prefix).'?t='.rawurlencode($token);
     }
 
     /**
@@ -92,12 +91,12 @@ class EmailCloak
         $zeroWidth = '&#8203;';
 
         return EmailEncoder::toHtmlEntities($user)
-            . '<span data-cloak-decoy aria-hidden="true">' . e($decoy) . '</span>'
-            . $zeroWidth
-            . '&#64;'
-            . $zeroWidth
-            . '<span data-cloak-decoy aria-hidden="true">' . e($decoy) . '</span>'
-            . EmailEncoder::toHtmlEntities($domain);
+            .'<span data-cloak-decoy aria-hidden="true">'.e($decoy).'</span>'
+            .$zeroWidth
+            .'&#64;'
+            .$zeroWidth
+            .'<span data-cloak-decoy aria-hidden="true">'.e($decoy).'</span>'
+            .EmailEncoder::toHtmlEntities($domain);
     }
 
     /**
@@ -116,7 +115,7 @@ class EmailCloak
 
         foreach ($indexes as $domPosition => $visualPosition) {
             $char = $chars[$visualPosition];
-            $entity = '&#' . mb_ord($char, 'UTF-8') . ';';
+            $entity = '&#'.mb_ord($char, 'UTF-8').';';
             $spans[] = sprintf(
                 '<span style="order:%d">%s</span>',
                 $visualPosition,

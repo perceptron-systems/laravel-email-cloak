@@ -14,7 +14,7 @@ class EmailCloakServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/email-cloak.php', 'email-cloak');
+        $this->mergeConfigFrom(__DIR__.'/../config/email-cloak.php', 'email-cloak');
 
         $this->app->singleton(EmailCloak::class);
     }
@@ -22,7 +22,8 @@ class EmailCloakServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerRateLimiter();
-        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'email-cloak');
         $this->registerBladeDirective();
         $this->registerPublishables();
     }
@@ -50,11 +51,15 @@ class EmailCloakServiceProvider extends ServiceProvider
         }
 
         $this->publishes([
-            __DIR__ . '/../config/email-cloak.php' => config_path('email-cloak.php'),
+            __DIR__.'/../config/email-cloak.php' => config_path('email-cloak.php'),
         ], 'email-cloak-config');
 
         $this->publishes([
-            __DIR__ . '/../resources/css/email-cloak.css' => public_path('vendor/email-cloak/email-cloak.css'),
+            __DIR__.'/../resources/css/email-cloak.css' => public_path('vendor/email-cloak/email-cloak.css'),
         ], 'email-cloak-assets');
+
+        $this->publishes([
+            __DIR__.'/../resources/views' => resource_path('views/vendor/email-cloak'),
+        ], 'email-cloak-views');
     }
 }

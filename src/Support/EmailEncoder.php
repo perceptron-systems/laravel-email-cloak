@@ -17,7 +17,7 @@ class EmailEncoder
         $out = '';
 
         foreach (mb_str_split($value, 1, 'UTF-8') as $char) {
-            $out .= '&#' . mb_ord($char, 'UTF-8') . ';';
+            $out .= '&#'.mb_ord($char, 'UTF-8').';';
         }
 
         return $out;
