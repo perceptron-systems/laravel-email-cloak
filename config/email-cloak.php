@@ -12,7 +12,7 @@ return [
     | May be overridden per call: @cloakedEmail($email, 'paranoid').
     |
     | - light     : decimal HTML entities + proxy route + verbalised aria-label
-    | - balanced  : light + display:none decoy spans + zero-width spaces
+    | - balanced  : light + display:none decoy spans around the @
     | - paranoid  : balanced + DOM order scrambled via flex `order` (copy KO)
     |
     */

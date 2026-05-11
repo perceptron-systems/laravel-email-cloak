@@ -89,7 +89,7 @@ Configurable globally in `config/email-cloak.php`, or per call.
 | Level | Selection | Copy | Bot resistance |
 |---|---|---|---|
 | `light` | ✅ | ✅ clean | Low — entities + proxy |
-| `balanced` *(default)* | ✅ | ✅ with decoys auto-stripped by most paste targets | Medium — entities + `display:none` poison spans + zero-width spaces + proxy |
+| `balanced` *(default)* | ✅ | ✅ with decoys auto-stripped by most paste targets | Medium — entities + `display:none` poison spans around the `@` + proxy |
 | `paranoid` | ✅ | ❌ scrambled | High — characters in spans reordered via `flex order`; copy is unusable but human reading is correct |
 
 Per-call override:
