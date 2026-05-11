@@ -24,7 +24,7 @@ jobs:
         name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -39,6 +39,9 @@ jobs:
                   path: ~/.composer/cache/files
                   key: deps-${{ matrix.php }}-${{ matrix.laravel }}-${{ hashFiles('composer.json') }}
 
+            - name: Drop dev tools unused in CI (laravel/pao is local agent UX)
+              run: composer remove --dev laravel/pao --no-update
+
             - name: Install dependencies
               run: |
                   composer require "illuminate/contracts:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
@@ -52,7 +55,7 @@ jobs:
         name: Pint
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -60,8 +63,11 @@ jobs:
                   php-version: '8.3'
                   coverage: none
 
+            - name: Drop dev tools unused in CI
+              run: composer remove --dev laravel/pao --no-update
+
             - name: Install dependencies
-              run: composer install --prefer-dist --no-interaction --no-progress
+              run: composer update --prefer-dist --no-interaction --no-progress
 
             - name: Run Pint
               run: vendor/bin/pint --test
@@ -71,7 +77,7 @@ jobs:
         name: PHPStan
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -79,8 +85,11 @@ jobs:
                   php-version: '8.3'
                   coverage: none
 
+            - name: Drop dev tools unused in CI
+              run: composer remove --dev laravel/pao --no-update
+
             - name: Install dependencies
-              run: composer install --prefer-dist --no-interaction --no-progress
+              run: composer update --prefer-dist --no-interaction --no-progress
 
             - name: Run PHPStan
               run: vendor/bin/phpstan analyse --no-progress
