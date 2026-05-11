@@ -1,20 +1,25 @@
 /*
- * laravel-email-cloak — feuille de style optionnelle
+ * laravel-email-cloak — stylesheet
  *
- * Le niveau `light` ne nécessite aucun CSS. Cette feuille n'est utile que pour
- * les niveaux `balanced` et `paranoid`, qui injectent des nœuds décoy.
+ * - Level `light`     : no CSS required (this stylesheet only adds a graceful
+ *                       wrap for long addresses).
+ * - Level `balanced`  : REQUIRED — without the [data-cloak-decoy] rule the
+ *                       NOSPAM poison spans would be visible.
+ * - Level `paranoid`  : REQUIRED — without .email-cloak--scrambled (flex+order)
+ *                       characters appear in DOM order, which is randomised
+ *                       and unreadable.
  */
 
 .email-cloak {
     word-break: break-all;
 }
 
-/* Décoys invisibles à l'écran et exclus du copier-coller. */
+/* Decoys hidden visually and excluded from copy-paste in most browsers. */
 .email-cloak [data-cloak-decoy] {
     display: none;
 }
 
-/* Niveau paranoid : reconstitue l'ordre visuel via flex/order. */
+/* Paranoid level: rebuild visual order via flex/order. */
 .email-cloak--scrambled {
     display: inline-flex;
     flex-direction: row;

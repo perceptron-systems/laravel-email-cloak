@@ -4,19 +4,19 @@
 [![Tests](https://img.shields.io/github/actions/workflow/status/perceptron-systems/laravel-email-cloak/ci.yml?branch=main&label=tests&style=flat-square)](https://github.com/perceptron-systems/laravel-email-cloak/actions/workflows/ci.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/perceptron-systems/laravel-email-cloak.svg?style=flat-square)](https://packagist.org/packages/perceptron-systems/laravel-email-cloak)
 
-Obfuscation d'adresses e-mail pour Laravel — **0 JavaScript**, route `mailto:` signée, pensée pour Core Web Vitals et l'accessibilité.
+Email address obfuscation for Laravel — **zero JavaScript**, encrypted `mailto:` proxy, designed for Core Web Vitals and accessibility.
 
-Affiche une adresse e-mail visible, sélectionnable et cliquable par les visiteurs, en rendant son extraction automatique nettement plus coûteuse pour les robots collecteurs de spam.
+Displays an email address that is visible, selectable and clickable to visitors, while making automated extraction significantly more expensive for spam-harvesting bots.
 
-## Pourquoi
+## Why
 
-Quand une obligation légale (mentions légales, RGPD, contact corporate) impose d'afficher une adresse e-mail en clair, les solutions habituelles ont chacune un défaut :
+When a legal obligation (legal notices, GDPR, corporate contact) requires displaying an email address in clear text, every common solution has a downside:
 
-- **Image** → ni sélectionnable, ni accessible, ni indexable.
-- **JavaScript** → impacte les Core Web Vitals et casse en environnement no-JS (AMP, certains crawlers, lecteurs basse conso).
-- **Middleware d'output parsing** → ralentit chaque réponse et fragilise le rendu.
+- **Image** → not selectable, not accessible, not indexable.
+- **JavaScript** → hurts Core Web Vitals and breaks in no-JS environments (AMP, some crawlers, low-power readers).
+- **Output-parsing middleware** → slows every response and makes rendering fragile.
 
-`laravel-email-cloak` prend le compromis assumé suivant : l'adresse reste **lisible, sélectionnable et copiable** par un humain, et l'on pousse au maximum la résistance aux scrapers sous cette contrainte.
+`laravel-email-cloak` makes an explicit trade-off: the address remains **readable, selectable and copyable** by humans, and we push scraper resistance as far as we can under that constraint.
 
 ## Installation
 
@@ -24,30 +24,30 @@ Quand une obligation légale (mentions légales, RGPD, contact corporate) impose
 composer require perceptron-systems/laravel-email-cloak
 ```
 
-Le ServiceProvider est auto-découvert.
+The service provider is auto-discovered.
 
-Publier la configuration et le CSS optionnel :
+Publish the configuration and the optional CSS:
 
 ```bash
 php artisan vendor:publish --tag=email-cloak-config
 php artisan vendor:publish --tag=email-cloak-assets
 ```
 
-## Utilisation
+## Usage
 
-### Directive Blade
-
-```blade
-@cloakedEmail('contact@monsite.fr')
-```
-
-Avec un libellé personnalisé (l'adresse n'apparaît alors nulle part dans le HTML rendu) :
+### Blade directive
 
 ```blade
-@cloakedEmail('contact@monsite.fr', 'light', 'Nous écrire')
+@cloakedEmail('contact@example.com')
 ```
 
-### Service injectable
+With a custom label (the address never appears in the rendered HTML):
+
+```blade
+@cloakedEmail('contact@example.com', 'light', 'Contact us')
+```
+
+### Injectable service
 
 ```php
 use PerceptronSystems\EmailCloak\EmailCloak;
@@ -55,41 +55,41 @@ use PerceptronSystems\EmailCloak\EmailCloak;
 public function show(EmailCloak $cloak)
 {
     return view('contact', [
-        'mail' => $cloak->render('contact@monsite.fr'),
+        'mail' => $cloak->render('contact@example.com'),
     ]);
 }
 ```
 
-## Comment ça marche
+## How it works
 
-| Couche | Effet |
+| Layer | Effect |
 |---|---|
-| **Entités HTML décimales** | `contact@monsite.fr` devient `&#99;&#111;&#110;…` dans le HTML. Les regex naïves (`/[\w.]+@[\w.]+/`) ne matchent rien ; le navigateur restitue le texte normalement. |
-| **Route proxy signée** | `href` pointe vers `/m?t={token}` au lieu de `mailto:`. Le token est `Crypt::encrypt(['email' => …, 'exp' => …])` — opaque, sans accès DB, avec TTL. |
-| **Rate limit** | La route proxy est limitée par IP via le RateLimiter natif de Laravel (par défaut 30/min). Un crawler qui résout les tokens en masse est freiné. |
-| **`aria-label` verbalisé** | Les lecteurs d'écran lisent « contact arobase monsite point fr ». L'adresse littérale n'apparaît dans aucun attribut. |
-| **`X-Robots-Tag: noindex, nofollow`** | La route proxy n'est pas indexable. |
-| **Validation côté proxy** | `filter_var(..., FILTER_VALIDATE_EMAIL)` + vérification d'expiration avant tout `mailto:` redirect. |
+| **Decimal HTML entities** | `contact@example.com` becomes `&#99;&#111;&#110;…` in the source. Naive regexes (`/[\w.]+@[\w.]+/`) don't match; the browser displays the text normally. |
+| **Encrypted proxy route** | `href` points to `/m?t={token}` instead of `mailto:`. The token is `Crypt::encrypt(['email' => …, 'exp' => …])` — opaque, stateless, expiring. |
+| **Rate limit** | The proxy route is throttled per IP using Laravel's native RateLimiter (default 30/min). A crawler resolving tokens en masse is slowed. |
+| **Verbalised `aria-label`** | Screen readers announce "contact at example dot com". The literal address never appears in any attribute. |
+| **`X-Robots-Tag: noindex, nofollow`** | The proxy route is not indexable. |
+| **Server-side validation** | `filter_var(..., FILTER_VALIDATE_EMAIL)` and expiry check before any `mailto:` redirect. |
 
-## Niveaux d'obfuscation
+## Obfuscation levels
 
-Configurable globalement dans `config/email-cloak.php`, ou par appel.
+Configurable globally in `config/email-cloak.php`, or per call.
 
-| Niveau | Sélection | Copie | Résistance bot |
+| Level | Selection | Copy | Bot resistance |
 |---|---|---|---|
-| `light` | ✅ | ✅ propre | Faible — entités + proxy |
-| `balanced` *(défaut)* | ✅ | ✅ avec décoys auto-strippés à la plupart des collages | Moyenne — entités + spans `display:none` poison + zero-width spaces + proxy |
-| `paranoid` | ✅ | ❌ scramblée | Haute — caractères en spans réordonnés via `flex` `order`, copie inutilisable mais lecture humaine OK |
+| `light` | ✅ | ✅ clean | Low — entities + proxy |
+| `balanced` *(default)* | ✅ | ✅ with decoys auto-stripped by most paste targets | Medium — entities + `display:none` poison spans + zero-width spaces + proxy |
+| `paranoid` | ✅ | ❌ scrambled | High — characters in spans reordered via `flex order`; copy is unusable but human reading is correct |
 
-Surcharge par appel :
+Per-call override:
 
 ```blade
-@cloakedEmail('contact@monsite.fr', 'paranoid')
+@cloakedEmail('contact@example.com', 'paranoid')
 ```
 
 ## Configuration
 
-Variables d'environnement disponibles :
+Available environment variables:
 
 ```dotenv
 EMAIL_CLOAK_LEVEL=balanced
@@ -100,25 +100,27 @@ EMAIL_CLOAK_CSS_CLASS=email-cloak
 EMAIL_CLOAK_DECOY=NOSPAM-REMOVE-THIS
 ```
 
-## Limites assumées
+For non-English sites, override the `aria` map in the published `config/email-cloak.php` (e.g. `' arobase '`, `' point '` for French).
 
-Cette bibliothèque ne prétend **pas** rendre l'adresse invisible aux bots qui rendent une page comme un navigateur (headless Chromium et assimilés). Sous la contrainte « visible + sélectionnable + cliquable », c'est mathématiquement impossible.
+## Acknowledged limits
 
-Ce qu'elle apporte :
+This library does **not** claim to hide the address from bots that render the page like a browser (headless Chromium and similar). Under the constraint "visible + selectable + clickable" this is mathematically impossible.
 
-- Bloque l'écrasante majorité des scrapers HTTP qui parsent le HTML brut sans rendre le DOM.
-- Empêche la collecte directe via `mailto:` dans le `href`.
-- Rend l'exploitation à grande échelle coûteuse (rate-limit, tokens chiffrés à courte durée de vie, headers anti-indexation).
-- Reste accessible (ARIA, sélectionnable, sans dépendance JS).
+What it does deliver:
 
-## Tests
+- Blocks the overwhelming majority of HTTP scrapers that parse raw HTML without rendering the DOM.
+- Prevents direct `mailto:` harvesting from `href`.
+- Makes large-scale exploitation expensive (rate-limit, encrypted short-lived tokens, anti-indexation headers).
+- Stays accessible (ARIA, selectable, no JS dependency).
+
+## Testing
 
 ```bash
 composer install
 composer test
 ```
 
-La suite vérifie notamment qu'**aucune occurrence littérale** de l'adresse, ni de `mailto:`, ni du caractère `@` ne se retrouve dans le HTML rendu, quel que soit le niveau.
+The suite verifies, among other things, that **no literal occurrence** of the address, of `mailto:`, or of the `@` character appears in the rendered HTML at any level.
 
 ## Licence
 

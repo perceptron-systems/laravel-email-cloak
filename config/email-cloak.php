@@ -6,78 +6,79 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Niveau d'obfuscation par défaut
+    | Default obfuscation level
     |--------------------------------------------------------------------------
     |
-    | Surchargeable au cas par cas via @cloakedEmail($email, 'paranoid').
+    | May be overridden per call: @cloakedEmail($email, 'paranoid').
     |
-    | - light     : entités HTML décimales + route proxy + aria-label
-    | - balanced  : light + spans décoy display:none + zero-width spaces
-    | - paranoid  : balanced + ordre DOM scramblé via flex `order` (copie KO)
+    | - light     : decimal HTML entities + proxy route + verbalised aria-label
+    | - balanced  : light + display:none decoy spans + zero-width spaces
+    | - paranoid  : balanced + DOM order scrambled via flex `order` (copy KO)
     |
     */
     'level' => env('EMAIL_CLOAK_LEVEL', 'balanced'),
 
     /*
     |--------------------------------------------------------------------------
-    | Route proxy mailto
+    | Mailto proxy route
     |--------------------------------------------------------------------------
     |
-    | URI sur laquelle est exposée la route de redirection mailto.
-    | Le token chiffré est passé en query string `?t=`.
+    | URI exposing the redirect endpoint. The encrypted token is passed in the
+    | `?t=` query string.
     |
     */
     'route_prefix' => env('EMAIL_CLOAK_ROUTE', '/m'),
 
     /*
     |--------------------------------------------------------------------------
-    | Durée de vie du token chiffré (secondes)
+    | Encrypted token TTL (seconds)
     |--------------------------------------------------------------------------
     |
-    | Au-delà de cette durée, le proxy renvoie 410 Gone.
+    | After this duration, the proxy returns 410 Gone.
     |
     */
     'ttl' => (int) env('EMAIL_CLOAK_TTL', 86400),
 
     /*
     |--------------------------------------------------------------------------
-    | Rate limit par IP (requêtes / minute)
+    | Per-IP rate limit (requests / minute)
     |--------------------------------------------------------------------------
     */
     'rate_limit' => (int) env('EMAIL_CLOAK_RATE_LIMIT', 30),
 
     /*
     |--------------------------------------------------------------------------
-    | Classe CSS appliquée au lien
+    | CSS class applied to the link
     |--------------------------------------------------------------------------
     */
     'css_class' => env('EMAIL_CLOAK_CSS_CLASS', 'email-cloak'),
 
     /*
     |--------------------------------------------------------------------------
-    | Verbalisation des caractères pour l'aria-label
+    | Special character verbalisation for aria-label
     |--------------------------------------------------------------------------
     |
-    | Lu par les lecteurs d'écran. Évite d'exposer l'adresse littérale aux
-    | bots qui parseraient l'attribut aria-label.
+    | Read by screen readers. Avoids exposing the literal address to bots
+    | parsing the aria-label attribute. Override these for non-English
+    | speaking sites (e.g. " arobase ", " point " for French).
     |
     */
     'aria' => [
-        '@' => ' arobase ',
-        '.' => ' point ',
-        '-' => ' tiret ',
-        '_' => ' souligné ',
+        '@' => ' at ',
+        '.' => ' dot ',
+        '-' => ' dash ',
+        '_' => ' underscore ',
         '+' => ' plus ',
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Texte poison injecté en spans décoy (niveau balanced/paranoid)
+    | Poison text injected in decoy spans (balanced/paranoid levels)
     |--------------------------------------------------------------------------
     |
-    | Inséré entre user et domain dans des <span style="display:none">. Inclus
-    | par les scrapers qui font strip_tags brut, ignoré par les navigateurs au
-    | rendu et au copier-coller.
+    | Inserted between user and domain in <span style="display:none"> nodes.
+    | Included by scrapers doing raw strip_tags, ignored by browsers at render
+    | time and at copy-paste.
     |
     */
     'decoy' => env('EMAIL_CLOAK_DECOY', 'NOSPAM-REMOVE-THIS'),

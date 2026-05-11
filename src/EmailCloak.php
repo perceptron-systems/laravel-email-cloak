@@ -19,7 +19,7 @@ class EmailCloak
     ) {}
 
     /**
-     * Génère le HTML d'un lien email obfusqué.
+     * Render an obfuscated email link as HTML.
      */
     public function render(string $email, ?string $level = null, ?string $label = null): HtmlString
     {
@@ -47,7 +47,7 @@ class EmailCloak
     }
 
     /**
-     * URL absolue de la route proxy avec token chiffré (email + expiration).
+     * Absolute proxy URL with an encrypted token (email + expiry).
      */
     private function buildProxyUrl(string $email): string
     {
@@ -63,9 +63,9 @@ class EmailCloak
     }
 
     /**
-     * Contenu visible du `<a>`. Si un label est fourni, on l'utilise tel quel
-     * (texte arbitraire qui ne ressemble pas à une adresse). Sinon on rend
-     * l'email selon le niveau d'obfuscation.
+     * Visible content of the `<a>`. When a label is provided we use it as-is
+     * (arbitrary text that does not look like an address). Otherwise we render
+     * the email according to the obfuscation level.
      */
     private function buildVisibleContent(string $email, string $level, ?string $label): string
     {
@@ -81,7 +81,7 @@ class EmailCloak
     }
 
     /**
-     * Niveau balanced : entités + spans décoy display:none + zero-width spaces.
+     * Balanced level: entities + display:none decoy spans + zero-width spaces.
      */
     private function renderWithDecoys(string $email): string
     {
@@ -100,8 +100,8 @@ class EmailCloak
     }
 
     /**
-     * Niveau paranoid : caractères dans des spans réordonnés via flex `order`.
-     * Lecture visuelle correcte, copier-coller scramblé.
+     * Paranoid level: characters wrapped in spans reordered through flex `order`.
+     * Visual order is correct; copy-paste is scrambled.
      */
     private function renderScrambled(string $email): string
     {

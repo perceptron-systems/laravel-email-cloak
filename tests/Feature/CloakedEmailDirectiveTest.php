@@ -34,7 +34,7 @@ it('emits a verbalised aria-label instead of the raw address', function () {
     $html = app(EmailCloak::class)->render($email)->toHtml();
 
     expect($html)
-        ->toContain('aria-label="guillaume arobase orsal point net"')
+        ->toContain('aria-label="guillaume at orsal dot net"')
         ->not->toContain('aria-label="guillaume@orsal.net"');
 });
 
@@ -51,10 +51,10 @@ it('points href to the configured proxy route with an opaque token', function ()
 it('uses a custom label when provided and still hides the address from the link', function () {
     $email = 'support@perceptron-systems.com';
 
-    $html = app(EmailCloak::class)->render($email, label: 'Nous écrire')->toHtml();
+    $html = app(EmailCloak::class)->render($email, label: 'Contact us')->toHtml();
 
     expect($html)
-        ->toContain('>Nous écrire</a>')
+        ->toContain('>Contact us</a>')
         ->not->toContain($email);
 });
 

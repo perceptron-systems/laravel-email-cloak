@@ -7,10 +7,10 @@ namespace PerceptronSystems\EmailCloak\Support;
 class EmailEncoder
 {
     /**
-     * Encode chaque caractère en entité HTML décimale.
+     * Encode each character as a decimal HTML entity.
      *
-     * Les scrapers qui regex sur `@` ou `mailto:` ne matchent pas, le
-     * navigateur restitue le texte normalement.
+     * Scrapers grepping for `@` or `mailto:` will not match; the browser
+     * renders the text normally.
      */
     public static function toHtmlEntities(string $value): string
     {
@@ -24,8 +24,8 @@ class EmailEncoder
     }
 
     /**
-     * Verbalise les caractères spéciaux d'une adresse pour les lecteurs
-     * d'écran sans exposer la forme littérale aux bots.
+     * Verbalise an address's special characters for screen readers without
+     * exposing the literal form to bots reading the attribute.
      *
      * @param  array<string, string>  $replacements
      */
