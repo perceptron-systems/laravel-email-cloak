@@ -1,8 +1,9 @@
 # laravel-email-cloak
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/perceptron-systems/laravel-email-cloak.svg?style=flat-square)](https://packagist.org/packages/perceptron-systems/laravel-email-cloak)
-[![Tests](https://img.shields.io/github/actions/workflow/status/perceptron-systems/laravel-email-cloak/ci.yml?branch=main&label=tests&style=flat-square)](https://github.com/perceptron-systems/laravel-email-cloak/actions/workflows/ci.yml)
+[![GitHub Workflow Status (main)](https://img.shields.io/github/actions/workflow/status/perceptron-systems/laravel-email-cloak/ci.yml?branch=main&style=flat-square)](https://github.com/perceptron-systems/laravel-email-cloak/actions/workflows/ci.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/perceptron-systems/laravel-email-cloak.svg?style=flat-square)](https://packagist.org/packages/perceptron-systems/laravel-email-cloak)
+[![Latest Version](https://img.shields.io/packagist/v/perceptron-systems/laravel-email-cloak.svg?style=flat-square)](https://packagist.org/packages/perceptron-systems/laravel-email-cloak)
+[![License](https://img.shields.io/packagist/l/perceptron-systems/laravel-email-cloak.svg?style=flat-square)](LICENSE)
 
 Email address obfuscation for Laravel — **zero JavaScript**, encrypted `mailto:` proxy, designed for Core Web Vitals and accessibility.
 
