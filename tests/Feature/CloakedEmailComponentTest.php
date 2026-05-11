@@ -18,12 +18,22 @@ it('renders the x-email-cloak::cloaked-email component without exposing the addr
         ->toContain('aria-label="contact at example dot com"');
 });
 
-it('forwards level and label props to the underlying renderer', function () {
+it('forwards the level prop to the underlying renderer', function () {
     $html = Blade::render(
-        '<x-email-cloak::cloaked-email email="foo@bar.tld" level="paranoid" label="Write to us" />'
+        '<x-email-cloak::cloaked-email email="foo@bar.tld" level="paranoid" />'
     );
 
     expect($html)
         ->toContain('email-cloak--scrambled')
-        ->toContain('>Write to us</a>');
+        ->toMatch('/<span style="order:\d+">/');
+});
+
+it('forwards the label prop to the underlying renderer', function () {
+    $html = Blade::render(
+        '<x-email-cloak::cloaked-email email="foo@bar.tld" label="Write to us" />'
+    );
+
+    expect($html)
+        ->toContain('>Write to us</a>')
+        ->not->toContain('foo@bar.tld');
 });

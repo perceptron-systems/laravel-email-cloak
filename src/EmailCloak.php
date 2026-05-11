@@ -38,7 +38,8 @@ class EmailCloak
         $href = $this->buildProxyUrl($email);
         $visible = $this->buildVisibleContent($email, $level, $label);
 
-        $cssClasses = $cssClass.($level === 'paranoid' ? ' email-cloak--scrambled' : '');
+        $isScrambled = $level === 'paranoid' && $label === null;
+        $cssClasses = $cssClass.($isScrambled ? ' email-cloak--scrambled' : '');
 
         $html = sprintf(
             '<a href="%s" class="%s" aria-label="%s" rel="nofollow noopener">%s</a>',

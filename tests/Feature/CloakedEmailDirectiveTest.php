@@ -58,6 +58,14 @@ it('uses a custom label when provided and still hides the address from the link'
         ->not->toContain($email);
 });
 
+it('omits the scrambled class when paranoid is combined with a custom label', function () {
+    $html = app(EmailCloak::class)->render('foo@bar.tld', 'paranoid', 'Contact us')->toHtml();
+
+    expect($html)
+        ->not->toContain('email-cloak--scrambled')
+        ->toContain('>Contact us</a>');
+});
+
 it('throws when render() receives an invalid email', function () {
     app(EmailCloak::class)->render('not-an-email');
 })->throws(InvalidArgumentException::class);
