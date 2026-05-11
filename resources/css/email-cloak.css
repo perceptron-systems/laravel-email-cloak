@@ -23,4 +23,5 @@
 .email-cloak--scrambled {
     display: inline-flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }

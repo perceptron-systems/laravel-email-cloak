@@ -26,8 +26,21 @@ return [
     | URI exposing the redirect endpoint. The encrypted token is passed in the
     | `?t=` query string.
     |
+    | Set `route_enabled` to false if your application registers the proxy
+    | itself (e.g. behind authentication or under a custom controller).
+    |
+    | `route_middleware` lets you stack additional middleware on top of the
+    | per-IP throttler — for instance to require a CSRF token or restrict to
+    | a specific guard.
+    |
     */
+    'route_enabled' => (bool) env('EMAIL_CLOAK_ROUTE_ENABLED', true),
+
     'route_prefix' => env('EMAIL_CLOAK_ROUTE', '/m'),
+
+    'route_name' => env('EMAIL_CLOAK_ROUTE_NAME', 'email-cloak.mailto'),
+
+    'route_middleware' => ['throttle:email-cloak'],
 
     /*
     |--------------------------------------------------------------------------

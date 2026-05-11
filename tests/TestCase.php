@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PerceptronSystems\EmailCloak\Tests;
+namespace Orsal\EmailCloak\Tests;
 
 use Illuminate\Foundation\Application;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use PerceptronSystems\EmailCloak\EmailCloakServiceProvider;
+use Orsal\EmailCloak\EmailCloakServiceProvider;
 
 abstract class TestCase extends BaseTestCase
 {

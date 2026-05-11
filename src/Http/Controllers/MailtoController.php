@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PerceptronSystems\EmailCloak\Http\Controllers;
+namespace Orsal\EmailCloak\Http\Controllers;
 
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\Encrypter;

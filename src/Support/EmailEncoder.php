@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PerceptronSystems\EmailCloak\Support;
+namespace Orsal\EmailCloak\Support;
 
 class EmailEncoder
 {

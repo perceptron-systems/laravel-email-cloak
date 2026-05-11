@@ -61,7 +61,7 @@ With a custom label (the address never appears in the rendered HTML):
 ### Injectable service
 
 ```php
-use PerceptronSystems\EmailCloak\EmailCloak;
+use Orsal\EmailCloak\EmailCloak;
 
 public function show(EmailCloak $cloak)
 {
@@ -105,13 +105,21 @@ Available environment variables:
 ```dotenv
 EMAIL_CLOAK_LEVEL=balanced
 EMAIL_CLOAK_ROUTE=/m
+EMAIL_CLOAK_ROUTE_ENABLED=true
+EMAIL_CLOAK_ROUTE_NAME=email-cloak.mailto
 EMAIL_CLOAK_TTL=86400
 EMAIL_CLOAK_RATE_LIMIT=30
 EMAIL_CLOAK_CSS_CLASS=email-cloak
 EMAIL_CLOAK_DECOY=NOSPAM-REMOVE-THIS
 ```
 
-For non-English sites, override the `aria` map in the published `config/email-cloak.php` (e.g. `' arobase '`, `' point '` for French).
+Set `EMAIL_CLOAK_ROUTE_ENABLED=false` if your application registers the proxy
+itself (custom controller, authenticated guard, etc.). The published
+`config/email-cloak.php` also exposes `route_middleware` to stack additional
+middleware on top of the per-IP throttle (CSRF, auth, custom guards).
+
+For non-English sites, override the `aria` map in the published
+`config/email-cloak.php` (e.g. `' arobase '`, `' point '` for French).
 
 ## Acknowledged limits
 

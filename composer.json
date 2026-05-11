@@ -6,11 +6,13 @@
     "keywords": ["laravel", "email", "obfuscation", "cloak", "anti-spam", "blade", "no-js"],
     "require": {
         "php": "^8.3",
+        "ext-mbstring": "*",
+        "illuminate/cache": "^11.0|^12.0|^13.0",
         "illuminate/contracts": "^11.0|^12.0|^13.0",
-        "illuminate/support": "^11.0|^12.0|^13.0",
-        "illuminate/routing": "^11.0|^12.0|^13.0",
-        "illuminate/http": "^11.0|^12.0|^13.0",
         "illuminate/encryption": "^11.0|^12.0|^13.0",
+        "illuminate/http": "^11.0|^12.0|^13.0",
+        "illuminate/routing": "^11.0|^12.0|^13.0",
+        "illuminate/support": "^11.0|^12.0|^13.0",
         "illuminate/view": "^11.0|^12.0|^13.0"
     },
     "require-dev": {
@@ -23,18 +25,18 @@
     },
     "autoload": {
         "psr-4": {
-            "PerceptronSystems\\EmailCloak\\": "src/"
+            "Orsal\\EmailCloak\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "PerceptronSystems\\EmailCloak\\Tests\\": "tests/"
+            "Orsal\\EmailCloak\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "PerceptronSystems\\EmailCloak\\EmailCloakServiceProvider"
+                "Orsal\\EmailCloak\\EmailCloakServiceProvider"
             ]
         }
     },

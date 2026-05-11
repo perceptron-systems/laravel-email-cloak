@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PerceptronSystems\EmailCloak;
+namespace Orsal\EmailCloak;
 
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Support\HtmlString;
-use PerceptronSystems\EmailCloak\Support\EmailEncoder;
+use InvalidArgumentException;
+use Orsal\EmailCloak\Support\EmailEncoder;
 
 class EmailCloak
 {
@@ -23,6 +24,10 @@ class EmailCloak
      */
     public function render(string $email, ?string $level = null, ?string $label = null): HtmlString
     {
+        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidArgumentException("EmailCloak::render() expects a valid email address, got: {$email}");
+        }
+
         $level = $level ?? $this->config->get('email-cloak.level', 'light');
         $cssClass = $this->config->get('email-cloak.css_class', 'email-cloak');
         $aria = EmailEncoder::toAriaLabel(
@@ -81,20 +86,21 @@ class EmailCloak
     }
 
     /**
-     * Balanced level: entities + display:none decoy spans + zero-width spaces.
+     * Balanced level: entities + display:none decoy spans around the @.
+     *
+     * Decoy text is swallowed by browsers (display:none) and most paste targets,
+     * but included by scrapers doing raw strip_tags. We deliberately avoid
+     * zero-width characters here to keep copied addresses byte-clean in form
+     * inputs and mail clients.
      */
     private function renderWithDecoys(string $email): string
     {
         $decoy = (string) $this->config->get('email-cloak.decoy', 'NOSPAM');
         [$user, $domain] = $this->splitEmail($email);
 
-        $zeroWidth = '&#8203;';
-
         return EmailEncoder::toHtmlEntities($user)
             .'<span data-cloak-decoy aria-hidden="true">'.e($decoy).'</span>'
-            .$zeroWidth
             .'&#64;'
-            .$zeroWidth
             .'<span data-cloak-decoy aria-hidden="true">'.e($decoy).'</span>'
             .EmailEncoder::toHtmlEntities($domain);
     }

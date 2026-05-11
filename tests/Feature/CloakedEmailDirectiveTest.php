@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Blade;
-use PerceptronSystems\EmailCloak\EmailCloak;
+use Orsal\EmailCloak\EmailCloak;
 
 it('renders without the literal email anywhere in the markup', function () {
     $email = 'contact@monsite.fr';
@@ -58,10 +58,14 @@ it('uses a custom label when provided and still hides the address from the link'
         ->not->toContain($email);
 });
 
+it('throws when render() receives an invalid email', function () {
+    app(EmailCloak::class)->render('not-an-email');
+})->throws(InvalidArgumentException::class);
+
 it('compiles the @cloakedEmail blade directive', function () {
     $compiled = Blade::compileString("@cloakedEmail('foo@bar.tld')");
 
-    expect($compiled)->toContain('PerceptronSystems\\EmailCloak\\EmailCloak');
+    expect($compiled)->toContain('Orsal\\EmailCloak\\EmailCloak');
     expect($compiled)->toContain("render('foo@bar.tld')");
 });
 

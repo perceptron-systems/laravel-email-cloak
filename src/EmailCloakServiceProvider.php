@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PerceptronSystems\EmailCloak;
+namespace Orsal\EmailCloak;
 
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -40,7 +40,7 @@ class EmailCloakServiceProvider extends ServiceProvider
     private function registerBladeDirective(): void
     {
         Blade::directive('cloakedEmail', function (string $expression): string {
-            return "<?php echo app(\\PerceptronSystems\\EmailCloak\\EmailCloak::class)->render({$expression}); ?>";
+            return "<?php echo app(\\Orsal\\EmailCloak\\EmailCloak::class)->render({$expression}); ?>";
         });
     }
 

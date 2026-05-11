@@ -4,4 +4,4 @@
     'label' => null,
 ])
 
-{!! app(\PerceptronSystems\EmailCloak\EmailCloak::class)->render($email, $level, $label) !!}
+{!! app(\Orsal\EmailCloak\EmailCloak::class)->render($email, $level, $label) !!}
