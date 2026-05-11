@@ -122,12 +122,6 @@ composer test
 
 La suite vérifie notamment qu'**aucune occurrence littérale** de l'adresse, ni de `mailto:`, ni du caractère `@` ne se retrouve dans le HTML rendu au niveau `light`.
 
-## Roadmap
-
-- v1 — directive Blade + route proxy + niveaux d'obfuscation + tests
-- v1.x — composant `<x-cloaked-email />`, helpers de rendu pour Markdown
-- v2 — variante Livewire stateless
-
 ## Licence
 
 MIT
