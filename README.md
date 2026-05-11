@@ -1,5 +1,11 @@
 # laravel-email-cloak
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/perceptron-systems/laravel-email-cloak.svg?style=flat-square)](https://packagist.org/packages/perceptron-systems/laravel-email-cloak)
+[![Tests](https://img.shields.io/github/actions/workflow/status/perceptron-systems/laravel-email-cloak/ci.yml?branch=main&label=tests&style=flat-square)](https://github.com/perceptron-systems/laravel-email-cloak/actions/workflows/ci.yml)
+[![PHP Version](https://img.shields.io/packagist/dependency-v/perceptron-systems/laravel-email-cloak/php?style=flat-square)](https://packagist.org/packages/perceptron-systems/laravel-email-cloak)
+[![Total Downloads](https://img.shields.io/packagist/dt/perceptron-systems/laravel-email-cloak.svg?style=flat-square)](https://packagist.org/packages/perceptron-systems/laravel-email-cloak)
+[![License](https://img.shields.io/packagist/l/perceptron-systems/laravel-email-cloak.svg?style=flat-square)](LICENSE)
+
 Obfuscation d'adresses e-mail pour Laravel — **0 JavaScript**, route `mailto:` signée, pensée pour Core Web Vitals et l'accessibilité.
 
 Affiche une adresse e-mail visible, sélectionnable et cliquable par les visiteurs, en rendant son extraction automatique nettement plus coûteuse pour les robots collecteurs de spam.
