@@ -2,6 +2,7 @@
     "name": "perceptron-systems/laravel-email-cloak",
     "description": "Obfuscation email Laravel — 0 JS, route mailto signée, friendly Core Web Vitals.",
     "type": "library",
+    "license": "MIT",
     "keywords": ["laravel", "email", "obfuscation", "cloak", "anti-spam", "blade", "no-js"],
     "require": {
         "php": "^8.3",
